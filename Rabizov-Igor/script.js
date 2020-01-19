@@ -55,16 +55,16 @@ Hamburger.STUFFING_POTATO = {
 };
 
 Hamburger.prototype.calculatePrice = function() {
-  var stuffingsCost = this.stuffings.reduce(function(a, obj) {
-    return a + obj.price;
+  var stuffingsCost = this.stuffings.reduce(function(acc, stuffing) {
+    return acc + stuffing.price;
   }, 0);
 
   return this.size.price + stuffingsCost;
 };
 
 Hamburger.prototype.calculateCalories = function() {
-  var stuffingsCalories = this.stuffings.reduce(function(a, obj) {
-    return a + obj.calories;
+  var stuffingsCalories = this.stuffings.reduce(function(acc, stuffing) {
+    return acc + stuffing.calories;
   }, 0);
 
   return this.size.calories + stuffingsCalories;
