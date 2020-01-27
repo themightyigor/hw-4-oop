@@ -90,9 +90,10 @@ Drink.COFFEE = {
 
 function Salad(salad, weight) {
   Item.call(this, salad.name);
+  var grams = 100;
   this.weight = weight || 100;
-  this.calories = this.getCalories(salad.calories);
-  this.price = this.getPrice(salad.price);
+  this.calories = this.getCalories(salad.calories, grams);
+  this.price = this.getPrice(salad.price, grams);
 }
 
 Salad.prototype = Object.create(Item.prototype);
@@ -109,12 +110,12 @@ Salad.OLIVIE = {
   calories: 80
 };
 
-Salad.prototype.getCalories = function(calories) {
-  return (calories * this.weight) / 100;
+Salad.prototype.getCalories = function(calories, grams) {
+  return (calories * this.weight) / grams;
 };
 
-Salad.prototype.getPrice = function(price) {
-  return (price * this.weight) / 100;
+Salad.prototype.getPrice = function(price, grams) {
+  return (price * this.weight) / grams;
 };
 
 function Order() {
@@ -139,7 +140,12 @@ Order.prototype.addItem = function(item) {
 };
 
 Order.prototype.getItems = function() {
-  return this.items;
+  var itemCount = this.items.reduce(function(sums, item) {
+    sums[item.name] = (sums[item.name] || 0) + 1;
+    return sums;
+  }, {});
+
+  return itemCount;
 };
 
 Order.prototype.deleteItem = function(item) {
@@ -179,12 +185,12 @@ Order.prototype.calculateCalories = function() {
   return sum;
 };
 
-let h = new Hamburger(Hamburger.SIZE_SMALL, [
+var h = new Hamburger(Hamburger.SIZE_SMALL, [
   Hamburger.STUFFING_SALAD,
   Hamburger.STUFFING_CHEESE
 ]);
-let d = new Drink(Drink.COFFEE);
-let s = new Salad(Salad.CAESAR, 100);
+var d = new Drink(Drink.COFFEE);
+var s = new Salad(Salad.CAESAR, 100);
 order = new Order(h, d, s);
 
 console.log('Order data: ');
